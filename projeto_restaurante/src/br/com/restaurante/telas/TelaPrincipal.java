@@ -5,6 +5,8 @@
  */
 package br.com.restaurante.telas;
 
+
+
 /**
  *
  * @author Usuario
@@ -14,8 +16,11 @@ public class TelaPrincipal extends javax.swing.JFrame {
     /**
      * Creates new form TelaPrincipal
      */
+   
+    
     public TelaPrincipal() {
         initComponents();
+        setExtendedState(MAXIMIZED_BOTH);
     }
 
     /**

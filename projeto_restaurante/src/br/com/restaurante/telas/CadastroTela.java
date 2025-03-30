@@ -6,6 +6,7 @@
 package br.com.restaurante.telas;
 import java.sql.*;
 import br.com.restaurante.dal.ModuloConexao;
+import javax.swing.JOptionPane;
 /**
  *
  * @author Usuario
@@ -14,9 +15,16 @@ public class CadastroTela extends javax.swing.JFrame {
     Connection conexao = null;
     PreparedStatement ps = null;
     ResultSet rs = null;
+    
     /**
      * Creates new form CadastroTela
+     * 
      */
+    public static boolean validarCpf(String cpf){
+        return cpf.matches("\\\\d{11}");
+    }
+    
+    
     public void cadastro(){
         String sql = "insert into tabelalogin(codCpf , senha, nome) values(? , ? , ?);";
         try {
@@ -153,7 +161,13 @@ public class CadastroTela extends javax.swing.JFrame {
     }//GEN-LAST:event_caixa_nomeActionPerformed
 
     private void btn_confirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_confirmarActionPerformed
-        cadastro();
+       if(validarCpf(caixa_cpf.getText())){
+           cadastro();
+       }else{
+           JOptionPane.showMessageDialog(null, "Banco de dados Não Conectado");
+       }
+        
+        
     }//GEN-LAST:event_btn_confirmarActionPerformed
 
     /**
