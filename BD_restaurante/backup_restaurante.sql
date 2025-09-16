@@ -1,6 +1,6 @@
 -- --------------------------------------------------------
 -- Servidor:                     127.0.0.1
--- Versão do servidor:           8.0.43 - MySQL Community Server - GPL
+-- Versão do servidor:           8.0.42 - MySQL Community Server - GPL
 -- OS do Servidor:               Win64
 -- HeidiSQL Versão:              12.10.0.7000
 -- --------------------------------------------------------
@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS `cardapio` (
   CONSTRAINT `fk_cardapio_categoria1` FOREIGN KEY (`categoria_codCategoria`) REFERENCES `categoria` (`codCategoria`)
 ) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb3;
 
--- Copiando dados para a tabela bd_restaurante.cardapio: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela bd_restaurante.cardapio: ~9 rows (aproximadamente)
 INSERT INTO `cardapio` (`codCardapio`, `nomeComida`, `valorComida`, `descricaoComida`, `categoria_codCategoria`) VALUES
 	(1, 'BIGTITES', 20.00, 'Grande molho cheddar', 1),
 	(2, 'Cheeseburger Clássico', 18.90, 'Pão, hambúrguer artesanal, queijo prato, alface, tomate e molho especial', 1),
@@ -51,14 +51,15 @@ CREATE TABLE IF NOT EXISTS `cargo` (
   `codCargo` int NOT NULL AUTO_INCREMENT,
   `nomeCargo` varchar(150) DEFAULT NULL,
   PRIMARY KEY (`codCargo`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb3;
 
--- Copiando dados para a tabela bd_restaurante.cargo: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela bd_restaurante.cargo: ~4 rows (aproximadamente)
 INSERT INTO `cargo` (`codCargo`, `nomeCargo`) VALUES
 	(1, 'Cozinheiro'),
 	(2, 'Garçom'),
 	(3, 'Gerente'),
-	(4, 'Atentende');
+	(4, 'Atentende'),
+	(5, 'ddd');
 
 -- Copiando estrutura para tabela bd_restaurante.categoria
 DROP TABLE IF EXISTS `categoria`;
@@ -68,7 +69,7 @@ CREATE TABLE IF NOT EXISTS `categoria` (
   PRIMARY KEY (`codCategoria`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb3;
 
--- Copiando dados para a tabela bd_restaurante.categoria: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela bd_restaurante.categoria: ~4 rows (aproximadamente)
 INSERT INTO `categoria` (`codCategoria`, `nomeCategoria`) VALUES
 	(1, 'Hamburguer'),
 	(2, 'Bebida'),
@@ -84,9 +85,9 @@ CREATE TABLE IF NOT EXISTS `cliente` (
   `telefone` varchar(50) DEFAULT NULL,
   `dataCadastro` datetime NOT NULL DEFAULT (now()),
   PRIMARY KEY (`codCliente`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb3;
 
--- Copiando dados para a tabela bd_restaurante.cliente: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela bd_restaurante.cliente: ~3 rows (aproximadamente)
 INSERT INTO `cliente` (`codCliente`, `nomeCliente`, `senhaCliente`, `telefone`, `dataCadastro`) VALUES
 	(1, 'YUJI', 'otaviano', '293821', '2025-09-13 19:15:50'),
 	(2, 'Otavio', 'marmota', '(35)99999-9999', '2025-09-14 12:30:38'),
@@ -146,9 +147,11 @@ CREATE TABLE IF NOT EXISTS `fornecedores` (
   `cidade` varchar(45) DEFAULT NULL,
   `estado` varchar(2) DEFAULT NULL,
   PRIMARY KEY (`codFornecedor`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb3;
 
 -- Copiando dados para a tabela bd_restaurante.fornecedores: ~0 rows (aproximadamente)
+INSERT INTO `fornecedores` (`codFornecedor`, `nomeFornecedor`, `cnpj`, `endereco`, `bairro`, `cidade`, `estado`) VALUES
+	(1, 's', 's', 's', 's', 's', 's');
 
 -- Copiando estrutura para tabela bd_restaurante.funcionario
 DROP TABLE IF EXISTS `funcionario`;
@@ -167,11 +170,12 @@ CREATE TABLE IF NOT EXISTS `funcionario` (
   KEY `fk_funcionario_cargo1_idx` (`cargo_codCargo`),
   CONSTRAINT `fk_funcionario_cargo1` FOREIGN KEY (`cargo_codCargo`) REFERENCES `cargo` (`codCargo`),
   CONSTRAINT `fk_funcionario_turnos1` FOREIGN KEY (`turnos_codTurnos`) REFERENCES `turnos` (`codTurnos`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb3;
 
 -- Copiando dados para a tabela bd_restaurante.funcionario: ~0 rows (aproximadamente)
 INSERT INTO `funcionario` (`codFuncionario`, `nomeFuncionario`, `dataNascimento`, `senhaFuncionario`, `cpfFuncionario`, `salarioFuncionario`, `turnos_codTurnos`, `cargo_codCargo`, `disponivel`) VALUES
-	(2, 'yamato', '2025-09-06', 'dksdks', '210290192', 1023.02, 1, 2, 1);
+	(2, 'yamato', '2025-09-06', 'dksdks', '210290192', 1023.02, 1, 2, 1),
+	(3, 'd', '2025-09-13', 'd', 'dd', 2.00, 1, 1, 1);
 
 -- Copiando estrutura para tabela bd_restaurante.mesa
 DROP TABLE IF EXISTS `mesa`;
@@ -240,7 +244,7 @@ CREATE TABLE IF NOT EXISTS `pedido_por_cardapio` (
   CONSTRAINT `fk_pedido_has_cardapio_pedido1` FOREIGN KEY (`pedido_idpedido`) REFERENCES `pedido` (`codpedido`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb3;
 
--- Copiando dados para a tabela bd_restaurante.pedido_por_cardapio: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela bd_restaurante.pedido_por_cardapio: ~6 rows (aproximadamente)
 INSERT INTO `pedido_por_cardapio` (`codpedido_por_cadapio`, `pedido_idpedido`, `cardapio_codCardapio`, `quantidade`) VALUES
 	(1, 1, 1, 2),
 	(2, 1, 1, 1),
@@ -562,6 +566,157 @@ BEGIN
 END//
 DELIMITER ;
 
+-- Copiando estrutura para procedure bd_restaurante.proc_apagarCargo
+DROP PROCEDURE IF EXISTS `proc_apagarCargo`;
+DELIMITER //
+CREATE PROCEDURE `proc_apagarCargo`(
+	IN `entradaCodCargo` INT
+)
+BEGIN
+	SELECT COUNT(*) INTO @existe
+   FROM cargo
+   WHERE codCargo = entradaCodCargo;
+
+   IF (@existe) THEN
+      DELETE FROM cargo
+      WHERE codCargo = entradaCodCargo;
+      SELECT 'Deu certo' AS mensagem;
+   ELSE
+      SELECT 'Código não encontrado.' AS mensagem;
+   END IF;
+END//
+DELIMITER ;
+
+-- Copiando estrutura para procedure bd_restaurante.proc_apagarCategoria
+DROP PROCEDURE IF EXISTS `proc_apagarCategoria`;
+DELIMITER //
+CREATE PROCEDURE `proc_apagarCategoria`(
+	IN `entradaCodCategoria` INT
+)
+BEGIN
+	SELECT COUNT(*) INTO @existe
+   FROM categoria
+   WHERE codCategoria = entradaCodCategoria;
+
+   IF (@existe) THEN
+      DELETE FROM categoria
+      WHERE codCategoria = entradaCodCategoria;
+      SELECT 'Deu certo' AS mensagem;
+   ELSE
+      SELECT 'Código não encontrado.' AS mensagem;
+   END IF;
+END//
+DELIMITER ;
+
+-- Copiando estrutura para procedure bd_restaurante.proc_apagarCliente
+DROP PROCEDURE IF EXISTS `proc_apagarCliente`;
+DELIMITER //
+CREATE PROCEDURE `proc_apagarCliente`(
+	IN `entradaCodCliente` INT
+)
+BEGIN
+	SELECT COUNT(*) INTO @existe
+   FROM cliente
+   WHERE codCliente= entradaCodCliente;
+
+   IF (@existe) THEN
+      DELETE FROM cliente
+      WHERE codCliente = entradaCodCliente;
+      SELECT 'Deu certo' AS mensagem;
+   ELSE
+      SELECT 'Código não encontrado.' AS mensagem;
+   END IF;
+END//
+DELIMITER ;
+
+-- Copiando estrutura para procedure bd_restaurante.proc_apagarFornecedores
+DROP PROCEDURE IF EXISTS `proc_apagarFornecedores`;
+DELIMITER //
+CREATE PROCEDURE `proc_apagarFornecedores`(
+	IN `entradaCodFornecedores` INT
+)
+BEGIN
+   SELECT COUNT(*) INTO @existe
+   FROM fornecedores
+   WHERE codFornecedor = entradaCodFornecedores;
+
+   IF (@existe) THEN
+      DELETE FROM fornecedores
+      WHERE codFornecedor = entradaCodFornecedores;
+      SELECT 'Deu certo' AS mensagem;
+   ELSE
+      SELECT 'Código não encontrado.' AS mensagem;
+   END IF;
+END//
+DELIMITER ;
+
+-- Copiando estrutura para procedure bd_restaurante.proc_apagarFuncionario
+DROP PROCEDURE IF EXISTS `proc_apagarFuncionario`;
+DELIMITER //
+CREATE PROCEDURE `proc_apagarFuncionario`(
+	IN `entradaCodFuncionario` INT
+)
+BEGIN
+
+
+    
+   SELECT COUNT(*) INTO @existe
+   FROM funcionario
+   WHERE codFuncionario = entradaCodFuncionario;
+
+   IF (@existe > 0) THEN
+      DELETE FROM funcionario
+      WHERE codFuncionario = entradaCodFuncionario;
+      SELECT 'Deu certo' AS mensagem;
+   ELSE
+      SELECT 'Código não encontrado.' AS mensagem;
+   END IF;
+
+END//
+DELIMITER ;
+
+-- Copiando estrutura para procedure bd_restaurante.proc_apagarMesa
+DROP PROCEDURE IF EXISTS `proc_apagarMesa`;
+DELIMITER //
+CREATE PROCEDURE `proc_apagarMesa`(
+	IN `entradaCodMesa` INT
+)
+BEGIN
+   SELECT COUNT(*) INTO @existe
+   FROM mesa
+   WHERE codMesa = entradaCodMesa;
+
+   IF (@existe > 0) THEN
+      DELETE FROM mesa
+      WHERE codMesa = entradaCodMesa;
+      SELECT 'Deu certo' AS mensagem;
+   ELSE
+      SELECT 'Código não encontrado.' AS mensagem;
+   END IF;
+END//
+DELIMITER ;
+
+-- Copiando estrutura para procedure bd_restaurante.proc_apagarTurnos
+DROP PROCEDURE IF EXISTS `proc_apagarTurnos`;
+DELIMITER //
+CREATE PROCEDURE `proc_apagarTurnos`(
+	IN `entradaCodTurnos` INT
+)
+BEGIN
+	  SELECT COUNT(*) INTO @existe
+   FROM turnos
+   WHERE codTurnos = entradaCodTurnos;
+
+   IF (@existe > 0) THEN
+      DELETE FROM turnos
+      WHERE codTurnos = entradaCodTurnos;
+      SELECT 'Deu certo' AS mensagem;
+   ELSE
+      SELECT 'Código não encontrado.' AS mensagem;
+   END IF;
+END//
+DELIMITER ;
+
 -- Copiando estrutura para procedure bd_restaurante.proc_insereCardapio
 DROP PROCEDURE IF EXISTS `proc_insereCardapio`;
 DELIMITER //
@@ -670,6 +825,15 @@ CREATE PROCEDURE `proc_insereTurnos`(
 BEGIN
     INSERT INTO turnos(horarioInicio , horarioFinal)
     VALUES(entradaHorarioInicio, entradaHorarioFinal);
+END//
+DELIMITER ;
+
+-- Copiando estrutura para procedure bd_restaurante.proc_relatorioClientes
+DROP PROCEDURE IF EXISTS `proc_relatorioClientes`;
+DELIMITER //
+CREATE PROCEDURE `proc_relatorioClientes`()
+BEGIN
+
 END//
 DELIMITER ;
 
