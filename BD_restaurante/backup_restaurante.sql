@@ -1,6 +1,6 @@
 -- --------------------------------------------------------
 -- Servidor:                     127.0.0.1
--- Versão do servidor:           8.0.42 - MySQL Community Server - GPL
+-- Versão do servidor:           8.0.43 - MySQL Community Server - GPL
 -- OS do Servidor:               Win64
 -- HeidiSQL Versão:              12.10.0.7000
 -- --------------------------------------------------------
@@ -53,7 +53,7 @@ CREATE TABLE IF NOT EXISTS `cargo` (
   PRIMARY KEY (`codCargo`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb3;
 
--- Copiando dados para a tabela bd_restaurante.cargo: ~4 rows (aproximadamente)
+-- Copiando dados para a tabela bd_restaurante.cargo: ~5 rows (aproximadamente)
 INSERT INTO `cargo` (`codCargo`, `nomeCargo`) VALUES
 	(1, 'Cozinheiro'),
 	(2, 'Garçom'),
@@ -81,6 +81,7 @@ DROP TABLE IF EXISTS `cliente`;
 CREATE TABLE IF NOT EXISTS `cliente` (
   `codCliente` int NOT NULL AUTO_INCREMENT,
   `nomeCliente` varchar(150) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
+  `cpfCliente` varchar(50) NOT NULL,
   `senhaCliente` varchar(150) NOT NULL,
   `telefone` varchar(50) DEFAULT NULL,
   `dataCadastro` datetime NOT NULL DEFAULT (now()),
@@ -88,10 +89,10 @@ CREATE TABLE IF NOT EXISTS `cliente` (
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb3;
 
 -- Copiando dados para a tabela bd_restaurante.cliente: ~3 rows (aproximadamente)
-INSERT INTO `cliente` (`codCliente`, `nomeCliente`, `senhaCliente`, `telefone`, `dataCadastro`) VALUES
-	(1, 'YUJI', 'otaviano', '293821', '2025-09-13 19:15:50'),
-	(2, 'Otavio', 'marmota', '(35)99999-9999', '2025-09-14 12:30:38'),
-	(3, 'Pedro', 'luquinhas', '(35)91022-1202', '2025-09-14 12:31:02');
+INSERT INTO `cliente` (`codCliente`, `nomeCliente`, `cpfCliente`, `senhaCliente`, `telefone`, `dataCadastro`) VALUES
+	(1, 'YUJI', '', 'otaviano', '293821', '2025-09-13 19:15:50'),
+	(2, 'Otavio', '', 'marmota', '(35)99999-9999', '2025-09-14 12:30:38'),
+	(3, 'Pedro', '', 'luquinhas', '(35)91022-1202', '2025-09-14 12:31:02');
 
 -- Copiando estrutura para tabela bd_restaurante.estoque
 DROP TABLE IF EXISTS `estoque`;
@@ -126,15 +127,19 @@ CREATE TABLE IF NOT EXISTS `estoque_por_fonecedor` (
 DROP TABLE IF EXISTS `feedback`;
 CREATE TABLE IF NOT EXISTS `feedback` (
   `codFeedback` int NOT NULL AUTO_INCREMENT,
-  `nota` varchar(45) DEFAULT NULL,
-  `descricao` varchar(45) DEFAULT NULL,
+  `nota` int NOT NULL,
+  `descricao` varchar(150) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT NULL,
+  `dataFeedback` datetime NOT NULL DEFAULT (now()),
   `cliente_codCliente` int NOT NULL,
   PRIMARY KEY (`codFeedback`,`cliente_codCliente`),
   KEY `fk_feedback_cliente1_idx` (`cliente_codCliente`),
   CONSTRAINT `fk_feedback_cliente1` FOREIGN KEY (`cliente_codCliente`) REFERENCES `cliente` (`codCliente`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb3;
 
 -- Copiando dados para a tabela bd_restaurante.feedback: ~0 rows (aproximadamente)
+INSERT INTO `feedback` (`codFeedback`, `nota`, `descricao`, `dataFeedback`, `cliente_codCliente`) VALUES
+	(1, 100, 'dadasd', '2025-09-20 17:52:44', 3),
+	(2, 3, 'd', '2025-09-20 17:53:00', 2);
 
 -- Copiando estrutura para tabela bd_restaurante.fornecedores
 DROP TABLE IF EXISTS `fornecedores`;
@@ -149,7 +154,7 @@ CREATE TABLE IF NOT EXISTS `fornecedores` (
   PRIMARY KEY (`codFornecedor`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb3;
 
--- Copiando dados para a tabela bd_restaurante.fornecedores: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela bd_restaurante.fornecedores: ~1 rows (aproximadamente)
 INSERT INTO `fornecedores` (`codFornecedor`, `nomeFornecedor`, `cnpj`, `endereco`, `bairro`, `cidade`, `estado`) VALUES
 	(1, 's', 's', 's', 's', 's', 's');
 
@@ -172,9 +177,9 @@ CREATE TABLE IF NOT EXISTS `funcionario` (
   CONSTRAINT `fk_funcionario_turnos1` FOREIGN KEY (`turnos_codTurnos`) REFERENCES `turnos` (`codTurnos`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb3;
 
--- Copiando dados para a tabela bd_restaurante.funcionario: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela bd_restaurante.funcionario: ~2 rows (aproximadamente)
 INSERT INTO `funcionario` (`codFuncionario`, `nomeFuncionario`, `dataNascimento`, `senhaFuncionario`, `cpfFuncionario`, `salarioFuncionario`, `turnos_codTurnos`, `cargo_codCargo`, `disponivel`) VALUES
-	(2, 'yamato', '2025-09-06', 'dksdks', '210290192', 1023.02, 1, 2, 1),
+	(2, 'Robertinho', '1900-09-20', '02392032', '210290192', 2000.00, 1, 1, 1),
 	(3, 'd', '2025-09-13', 'd', 'dd', 2.00, 1, 1, 1);
 
 -- Copiando estrutura para tabela bd_restaurante.mesa
@@ -203,9 +208,11 @@ CREATE TABLE IF NOT EXISTS `pagamento` (
   `dataPagamento` date NOT NULL,
   `statusPagamento` varchar(150) DEFAULT NULL,
   PRIMARY KEY (`codPagamento`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb3;
 
 -- Copiando dados para a tabela bd_restaurante.pagamento: ~0 rows (aproximadamente)
+INSERT INTO `pagamento` (`codPagamento`, `formaPagamento`, `valorPago`, `dataPagamento`, `statusPagamento`) VALUES
+	(1, 'debito', 32.00, '2025-09-20', '1');
 
 -- Copiando estrutura para tabela bd_restaurante.pedido
 DROP TABLE IF EXISTS `pedido`;
@@ -222,13 +229,14 @@ CREATE TABLE IF NOT EXISTS `pedido` (
   CONSTRAINT `fk_pedido_cliente1` FOREIGN KEY (`cliente_codCliente`) REFERENCES `cliente` (`codCliente`),
   CONSTRAINT `fk_pedido_funcionario1` FOREIGN KEY (`funcionario_codFuncionario`) REFERENCES `funcionario` (`codFuncionario`),
   CONSTRAINT `fk_pedido_mesa1` FOREIGN KEY (`mesa_codMesa`) REFERENCES `mesa` (`codMesa`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb3;
 
--- Copiando dados para a tabela bd_restaurante.pedido: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela bd_restaurante.pedido: ~3 rows (aproximadamente)
 INSERT INTO `pedido` (`codpedido`, `cliente_codCliente`, `mesa_codMesa`, `funcionario_codFuncionario`, `datahoraPedido`) VALUES
 	(1, 1, 1, 2, '2025-09-14 11:52:40'),
 	(2, 3, 3, 2, '2025-09-14 12:34:09'),
-	(3, 2, 5, 2, '2025-09-14 12:34:26');
+	(3, 2, 5, 2, '2025-09-14 12:34:26'),
+	(4, 1, 4, 2, '2025-09-20 20:19:00');
 
 -- Copiando estrutura para tabela bd_restaurante.pedido_por_cardapio
 DROP TABLE IF EXISTS `pedido_por_cardapio`;
@@ -472,7 +480,7 @@ BEGIN
 
         IF (entradaDataFuncionario IS NOT NULL) THEN
             UPDATE funcionario
-            SET dataFuncionario = entradaDataFuncionario
+            SET dataNascimento = entradaDataFuncionario
             WHERE codFuncionario = entradaCodFuncionario;
         END IF;
         
@@ -791,14 +799,35 @@ CREATE PROCEDURE `proc_insereFuncionario`(
 	IN `entradacodTurno` INT
 )
 BEGIN
-	SELECT COUNT(*) INTO @contador FROM turnos WHERE codTurnos = entradacodTurno;
-    IF (@contador) THEN
-      	INSERT INTO funcionario(nomeFuncionario, dataNascimento, senhaFuncionario, cpfFuncionario, salarioFuncionario,
-        	cargoFuncionario, turnos_codTurnos, disponivel) 
-        	VALUES(entradaNome, entradaNascimento, entradaSenha, entradaCpf, entradaSalario, entradaCargo, entradacodTurno,1);
-    ELSE
-        SELECT "Turno não cadastrado" AS Erro;
-    END IF;
+	SELECT COUNT(*) INTO @contadorTurno FROM turnos WHERE codTurnos = entradacodTurno;
+  SELECT COUNT(*) INTO @contadorCargo FROM cargo WHERE codCargo = entradaCodCargo;
+
+  IF (@contadorTurno > 0 AND @contadorCargo > 0) THEN
+    INSERT INTO funcionario (
+      nomeFuncionario,
+      dataNascimento,
+      senhaFuncionario,
+      cpfFuncionario,
+      salarioFuncionario,
+      turnos_codTurnos,
+      cargo_codCargo,
+      disponivel
+    ) VALUES (
+      entradaNome,
+      entradaNascimento,
+      entradaSenha,
+      entradaCpf,
+      entradaSalario,
+      entradacodTurno,
+      entradaCodCargo,
+      1
+    );
+    SELECT 'Funcionário inserido com sucesso!' AS Resultado;
+  		ELSEIF (@contadorTurno = 0) THEN
+    		SELECT 'Turno não cadastrado' AS Erro;
+  ELSE
+    	SELECT 'Cargo não cadastrado' AS Erro;
+  END IF;
 END//
 DELIMITER ;
 
@@ -828,12 +857,144 @@ BEGIN
 END//
 DELIMITER ;
 
+-- Copiando estrutura para procedure bd_restaurante.proc_relatorioCardapio
+DROP PROCEDURE IF EXISTS `proc_relatorioCardapio`;
+DELIMITER //
+CREATE PROCEDURE `proc_relatorioCardapio`(
+	IN `entradaOpcao` INT
+)
+BEGIN
+	CASE entradaOpcao
+        WHEN 1 THEN
+            -- 1) Catálogo básico: produto + categoria + preço, ordem alfabética
+            SELECT 'Ordem alfabetica' AS criterio, c.codCardapio, c.nomeComida AS produto, cat.nomeCategoria AS categoria,
+                CONCAT('R$ ', FORMAT(c.valorComida, 2, 'pt_BR')) AS preco,
+                CONCAT(LEFT(IFNULL(c.descricaoComida,''), 60),
+                       IF(LENGTH(IFNULL(c.descricaoComida,''))>60,'...','')) AS descricao_curta
+            FROM cardapio c
+            JOIN categoria cat ON cat.codCategoria = c.categoria_codCategoria
+            ORDER BY produto;
+
+        WHEN 2 THEN
+            -- 2) Do mais barato ao mais caro, com faixa de preço
+            SELECT
+                c.codCardapio,
+                c.nomeComida AS produto,
+                CONCAT('R$ ', FORMAT(c.valorComida, 2)) AS preco,
+                CASE
+                    WHEN c.valorComida < 10  THEN 
+								'Barato'
+                    WHEN c.valorComida < 20  THEN 
+						  		'Medio'
+                    WHEN c.valorComida < 30  THEN 
+						  		'Premium'
+                    ELSE 'Especial'
+                END AS faixa_preco,
+                cat.nomeCategoria AS categoria
+            FROM cardapio c
+            INNER JOIN categoria cat ON cat.codCategoria = c.categoria_codCategoria
+            ORDER BY c.valorComida;
+
+        WHEN 3 THEN
+				SELECT c.codCardapio, c.nomeComida AS produto, COALESCE(SUM(pc.quantidade), 0) AS total_vendido
+      		FROM cardapio c
+      		LEFT JOIN pedido_por_cardapio pc ON pc.cardapio_codCardapio = c.codCardapio
+      		GROUP BY c.codCardapio, c.nomeComida
+      		ORDER BY total_vendido DESC, produto;
+  
+            
+
+        ELSE
+            SELECT 'Opcao invalida. Use 1 a 3.' AS Erro;
+    END CASE;
+END//
+DELIMITER ;
+
 -- Copiando estrutura para procedure bd_restaurante.proc_relatorioClientes
 DROP PROCEDURE IF EXISTS `proc_relatorioClientes`;
 DELIMITER //
-CREATE PROCEDURE `proc_relatorioClientes`()
+CREATE PROCEDURE `proc_relatorioClientes`(
+	IN `entradaOpcao` INT
+)
 BEGIN
+	CASE entradaOpcao
+        WHEN 1 THEN
+            SELECT codCliente, nomeCliente, cpfCliente, telefone
+            FROM cliente
+            ORDER BY nomeCliente;
+            
+        when 2 then 
+      		SELECT codCliente, nomeCliente, cpfCliente, telefone
+      		FROM cliente
+      		ORDER BY nomeCliente DESC;
+        WHEN 3 THEN
+         	SELECT codCliente, nomeCliente, DATE(dataCadastro) AS dataCadastro
+         	FROM cliente
+            ORDER BY dataCadastro DESC;
+            
+        WHEN 4 THEN
+           SELECT codCliente, nomeCliente, DATE(dataCadastro) AS dataCadastro
+         	FROM cliente
+            ORDER BY dataCadastro DESC;
 
+        WHEN 5 THEN
+            SELECT c.nomeCliente, p.codpedido, p.mesa_codMesa, p.datahoraPedido 
+				FROM cliente AS c INNER JOIN pedido AS p ON
+				c.codCliente = p.cliente_codCliente ; 
+        ELSE
+            SELECT 'Opção inválida. Use 1 a 5.' AS Erro;
+    END CASE;
+   end//
+DELIMITER ;
+
+-- Copiando estrutura para procedure bd_restaurante.proc_relatorioFuncionario
+DROP PROCEDURE IF EXISTS `proc_relatorioFuncionario`;
+DELIMITER //
+CREATE PROCEDURE `proc_relatorioFuncionario`(
+	IN `entradaOpcao` INT
+)
+BEGIN
+	CASE entradaOpcao
+    WHEN 1 THEN
+      SELECT 
+        f.codFuncionario, f.nomeFuncionario AS funcionario, ca.nomeCargo AS cargo, f.salarioFuncionario AS salario, t.horarioInicio, t.horarioFinal,
+        CASE 
+				WHEN f.disponivel = 1 THEN 
+					'Disponível' 
+				ELSE 'Indisponível' 
+			END AS status
+      FROM funcionario f
+      INNER JOIN cargo ca ON ca.codCargo = f.cargo_codCargo
+      INNER JOIN turnos t  ON t.codTurnos = f.turnos_codTurnos
+      ORDER BY funcionario;
+
+    WHEN 2 THEN
+      SELECT f.codFuncionario, f.nomeFuncionario AS funcionario, ca.nomeCargo AS cargo, f.salarioFuncionario AS salario,
+        CASE
+          WHEN f.salarioFuncionario < 1500 THEN 'Baixo'
+          WHEN f.salarioFuncionario < 3000 THEN 'Médio'
+          WHEN f.salarioFuncionario < 5000 THEN 'Alto'
+          ELSE 'Top'
+        END AS faixa_salarial
+      FROM funcionario f
+      INNER JOIN cargo ca ON ca.codCargo = f.cargo_codCargo
+      ORDER BY salario DESC, funcionario;
+
+    WHEN 3 THEN
+      SELECT
+        f.codFuncionario,
+        f.nomeFuncionario AS funcionario,
+        ca.nomeCargo      AS cargo,
+        COALESCE(COUNT(p.codpedido), 0) AS qtdPedidos
+      FROM funcionario f
+      LEFT JOIN pedido p ON p.funcionario_codFuncionario = f.codFuncionario
+      INNER JOIN cargo ca ON ca.codCargo = f.cargo_codCargo
+      GROUP BY f.codFuncionario, f.nomeFuncionario, ca.nomeCargo
+      ORDER BY qtdPedidos DESC, funcionario;
+
+    ELSE
+      SELECT 'Opção inválida. Use 1, 2 ou 3.' AS Erro;
+   END case;
 END//
 DELIMITER ;
 
@@ -855,17 +1016,17 @@ DROP TABLE IF EXISTS `venda`;
 CREATE TABLE IF NOT EXISTS `venda` (
   `codVenda` int NOT NULL AUTO_INCREMENT,
   `pedido_idpedido` int NOT NULL,
-  `pedido_cliente_codCliente` int NOT NULL,
-  `pedido_mesa_codMesa` int NOT NULL,
   `pagamento_codPagamento` int NOT NULL,
-  PRIMARY KEY (`codVenda`,`pedido_idpedido`,`pedido_cliente_codCliente`,`pedido_mesa_codMesa`,`pagamento_codPagamento`),
-  KEY `fk_venda_pedido1_idx` (`pedido_idpedido`,`pedido_cliente_codCliente`,`pedido_mesa_codMesa`),
+  PRIMARY KEY (`codVenda`,`pedido_idpedido`,`pagamento_codPagamento`) USING BTREE,
   KEY `fk_venda_pagamento1_idx` (`pagamento_codPagamento`),
+  KEY `fk_venda_pedido1_idx` (`pedido_idpedido`) USING BTREE,
   CONSTRAINT `fk_venda_pagamento1` FOREIGN KEY (`pagamento_codPagamento`) REFERENCES `pagamento` (`codPagamento`),
-  CONSTRAINT `fk_venda_pedido1` FOREIGN KEY (`pedido_idpedido`, `pedido_cliente_codCliente`, `pedido_mesa_codMesa`) REFERENCES `pedido` (`codpedido`, `cliente_codCliente`, `mesa_codMesa`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+  CONSTRAINT `fk_venda_pedido1` FOREIGN KEY (`pedido_idpedido`) REFERENCES `pedido` (`codpedido`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb3;
 
 -- Copiando dados para a tabela bd_restaurante.venda: ~0 rows (aproximadamente)
+INSERT INTO `venda` (`codVenda`, `pedido_idpedido`, `pagamento_codPagamento`) VALUES
+	(1, 2, 1);
 
 -- Copiando estrutura para view bd_restaurante.view_pedidoscardapio
 DROP VIEW IF EXISTS `view_pedidoscardapio`;

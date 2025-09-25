@@ -11,24 +11,46 @@ import java.sql.*;
  */
 public class ModuloConexao {
     //metodo para estabeler conexao com o banco de dados
-    public static Connection conector(){
+    
+    private static final String banco = "jdbc:mysql://localhost:3307/bd_restaurante";
+    private static final String driver = "com.mysql.cj.jdbc.Driver";
+    private static final String usuario = "root";
+    private static final String senha = "1234";
+    private static Connection con = null;
+
+    public ModuloConexao() {
+
+    }
+
+    public static Connection conector() {
         //Connection e um framework 
-        Connection conexao = null;
-        
-        //a linha abaixo chama o driver de conexao
-        String driver = "com.mysql.cj.jdbc.Driver";
-        //informacoes do banco de dados
-        String url = "jdbc:mysql://localhost:3306/bd_restaurante";
-        String user = "root";
-        String password = "takeot15";
-        //estabelecendo conexao
-        try { //tentar conecao
-            Class.forName(driver);
-            conexao = DriverManager.getConnection(url,user,password);
-            return conexao;
-        } catch (Exception e) {
-            System.out.println(e);
-            return null;
+        if (con == null) {
+            try { //tentar conecao
+                Class.forName(driver);
+                con = DriverManager.getConnection(banco, usuario, senha);
+               
+            } catch (ClassNotFoundException ex) {
+                System.out.println("Não encontrou o driver: "+ex);
+                
+            } catch(SQLException ex){
+                System.out.println("Erro na Conexão: "+ex.getMessage());
+            }
         }
+        
+        return con;
+        //informacoes do banco de dados
+        //estabelecendo conexao
+    }
+    
+    public static PreparedStatement getPreparableStatement(String comandoSql){
+        if(con == null){
+            con = conector();
+        }
+        try{
+            return con.prepareStatement(comandoSql);
+        } catch(SQLException ex){
+            System.out.println("Erro do Sql:"+ex.getMessage());
+        }
+        return null;
     }
 }

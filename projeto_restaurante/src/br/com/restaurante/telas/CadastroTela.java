@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package br.com.restaurante.telas;
+import br.com.restaurante.classes.Cliente;
 import java.sql.*;
 import br.com.restaurante.dal.ModuloConexao;
 import javax.swing.JOptionPane;
@@ -26,24 +27,20 @@ public class CadastroTela extends javax.swing.JFrame {
     
     
     public void cadastro(){
-        String sql = "insert into tabelalogin(codCpf , senha, nome) values(? , ? , ?);";
-        try {
-            ps = conexao.prepareStatement(sql);
-            ps.setString(1, caixa_cpf.getText());
-            ps.setString(2, caixa_password.getText());
-            ps.setString(3, caixa_nome.getText());
-            ps.executeUpdate();
-            System.out.println("olasss"+ps);
-        } catch (Exception e) {
-            System.out.println(e);
+        Cliente cliente = new Cliente(
+            caixa_nome.getText(), 
+            caixa_cpf.getText(),
+            caixa_password.getText(), 
+            caixa_telefone.getText()
+        );
+        
+        System.out.println(cliente);
+        if(cliente.insereCliente()){
+            JOptionPane.showConfirmDialog(null, "Cliente Cadastrado com Sucesso");
+        }else{
+            JOptionPane.showConfirmDialog(null, "Não foi possível cadastrar");
         }
         
-        
-        
-        //ps.setString(2, caixa_nome.getText());
-        //ps.setString(3, caixa_password.getText());
-    
-    
     }
     
     public CadastroTela() {
@@ -62,24 +59,20 @@ public class CadastroTela extends javax.swing.JFrame {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        caixa_cpf = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         caixa_nome = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         caixa_password = new javax.swing.JPasswordField();
         jLabel4 = new javax.swing.JLabel();
         btn_confirmar = new javax.swing.JButton();
+        jLabel5 = new javax.swing.JLabel();
+        caixa_telefone = new javax.swing.JFormattedTextField();
+        caixa_cpf = new javax.swing.JFormattedTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel1.setFont(new java.awt.Font("Yu Gothic UI", 0, 24)); // NOI18N
         jLabel1.setText("Cadastro");
-
-        caixa_cpf.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                caixa_cpfActionPerformed(evt);
-            }
-        });
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel2.setText("CPF:");
@@ -103,72 +96,105 @@ public class CadastroTela extends javax.swing.JFrame {
             }
         });
 
+        jLabel5.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel5.setText("Telefone:");
+
+        try {
+            caixa_telefone.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("(##)#####-####")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
+        caixa_telefone.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                caixa_telefoneActionPerformed(evt);
+            }
+        });
+
+        try {
+            caixa_cpf.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("###.###.###-##")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
+        caixa_cpf.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                caixa_cpfActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(33, 33, 33)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(caixa_password, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(caixa_nome, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4)
+                    .addComponent(jLabel3))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 76, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(160, 160, 160)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel4)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(caixa_cpf, javax.swing.GroupLayout.DEFAULT_SIZE, 226, Short.MAX_VALUE)
-                                .addComponent(jLabel2)
-                                .addComponent(jLabel3)
-                                .addComponent(caixa_nome)
-                                .addComponent(caixa_password))))
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(189, 189, 189))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(234, 234, 234)
-                        .addComponent(btn_confirmar))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(221, 221, 221)
-                        .addComponent(jLabel1)))
-                .addContainerGap(171, Short.MAX_VALUE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(caixa_cpf, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(caixa_telefone, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(83, 83, 83))))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(249, 249, 249)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel1)
+                    .addComponent(btn_confirmar))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(54, 54, 54)
+                .addGap(50, 50, 50)
                 .addComponent(jLabel1)
-                .addGap(18, 18, 18)
-                .addComponent(jLabel2)
+                .addGap(26, 26, 26)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel3))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(caixa_nome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(caixa_cpf, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(31, 31, 31)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel4))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(caixa_cpf, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jLabel3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(caixa_nome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jLabel4)
-                .addGap(18, 18, 18)
-                .addComponent(caixa_password, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(33, 33, 33)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(caixa_password, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(caixa_telefone, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 95, Short.MAX_VALUE)
                 .addComponent(btn_confirmar)
-                .addContainerGap(46, Short.MAX_VALUE))
+                .addGap(53, 53, 53))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void caixa_cpfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_caixa_cpfActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_caixa_cpfActionPerformed
 
     private void caixa_nomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_caixa_nomeActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_caixa_nomeActionPerformed
 
     private void btn_confirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_confirmarActionPerformed
-       if(validarCpf(caixa_cpf.getText())){
-           cadastro();
-       }else{
-           JOptionPane.showMessageDialog(null, "Banco de dados Não Conectado");
-       }
-        
-        
+       cadastro();
     }//GEN-LAST:event_btn_confirmarActionPerformed
+
+    private void caixa_telefoneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_caixa_telefoneActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_caixa_telefoneActionPerformed
+
+    private void caixa_cpfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_caixa_cpfActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_caixa_cpfActionPerformed
 
     /**
      * @param args the command line arguments
@@ -207,12 +233,14 @@ public class CadastroTela extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_confirmar;
-    private javax.swing.JTextField caixa_cpf;
+    private javax.swing.JFormattedTextField caixa_cpf;
     private javax.swing.JTextField caixa_nome;
     private javax.swing.JPasswordField caixa_password;
+    private javax.swing.JFormattedTextField caixa_telefone;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     // End of variables declaration//GEN-END:variables
 }
