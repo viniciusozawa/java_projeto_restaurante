@@ -106,7 +106,7 @@ CREATE TABLE IF NOT EXISTS `estoque` (
   PRIMARY KEY (`codEstoque`)
 ) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb3;
 
--- Copiando dados para a tabela bd_restaurante.estoque: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela bd_restaurante.estoque: ~16 rows (aproximadamente)
 INSERT INTO `estoque` (`codEstoque`, `nomeItem`, `quant`, `dataProducao`, `dataVencimento`, `descricao`) VALUES
 	(1, 'Pão de Hambúrguer Tradicional', 120.00, '2025-09-24', '2025-10-01', 'Pão artesanal de 90g para hambúrgueres clássicos'),
 	(2, 'Pão Australiano', 80.00, '2025-09-23', '2025-10-03', 'Pão escuro com toque adocicado, ideal para sanduíches especiais'),
@@ -138,7 +138,7 @@ CREATE TABLE IF NOT EXISTS `estoque_por_fornecedor` (
   CONSTRAINT `fk_estoque_has_fornecedores_fornecedores1` FOREIGN KEY (`fornecedores_codFornecedor`) REFERENCES `fornecedores` (`codFornecedor`)
 ) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb3;
 
--- Copiando dados para a tabela bd_restaurante.estoque_por_fornecedor: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela bd_restaurante.estoque_por_fornecedor: ~12 rows (aproximadamente)
 INSERT INTO `estoque_por_fornecedor` (`codestoque_por_fonecedor`, `estoque_codEstoque`, `fornecedores_codFornecedor`) VALUES
 	(3, 1, 2),
 	(4, 2, 2),
@@ -184,7 +184,7 @@ CREATE TABLE IF NOT EXISTS `fornecedores` (
   PRIMARY KEY (`codFornecedor`)
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb3;
 
--- Copiando dados para a tabela bd_restaurante.fornecedores: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela bd_restaurante.fornecedores: ~7 rows (aproximadamente)
 INSERT INTO `fornecedores` (`codFornecedor`, `nomeFornecedor`, `cnpj`, `endereco`, `bairro`, `cidade`, `estado`) VALUES
 	(2, 'Pães & Cia LTDA', '12.345.678/0001-90', 'Rua dos Padeiros, 123', 'Centro', 'São Paulo', 'SP'),
 	(3, 'Carne Nobre Distribuidora', '23.456.789/0001-01', 'Av. do Açougue, 456', 'Industrial', 'Campinas', 'SP'),
@@ -1063,6 +1063,17 @@ CREATE TABLE IF NOT EXISTS `venda` (
 INSERT INTO `venda` (`codVenda`, `pedido_idpedido`, `pagamento_codPagamento`) VALUES
 	(1, 2, 1);
 
+-- Copiando estrutura para view bd_restaurante.vi_diasclientes
+DROP VIEW IF EXISTS `vi_diasclientes`;
+-- Criando tabela temporária para evitar erros de dependência de VIEW
+CREATE TABLE `vi_diasclientes` (
+	`nomeCliente` VARCHAR(1) NOT NULL COLLATE 'utf8mb3_general_ci',
+	`cpfCliente` VARCHAR(1) NOT NULL COLLATE 'utf8mb3_general_ci',
+	`telefone` VARCHAR(1) NULL COLLATE 'utf8mb3_general_ci',
+	`dataCadastro_formatada` VARCHAR(1) NULL COLLATE 'utf8mb4_general_ci',
+	`dias_cadastrado` INT NULL
+) ENGINE=MyISAM;
+
 -- Copiando estrutura para view bd_restaurante.vi_estoquefornecedores
 DROP VIEW IF EXISTS `vi_estoquefornecedores`;
 -- Criando tabela temporária para evitar erros de dependência de VIEW
@@ -1119,6 +1130,11 @@ CREATE TABLE `vi_visualizarcardapio` (
 	`descricaoComida` VARCHAR(1) NULL COLLATE 'utf8mb3_general_ci',
 	`nomeCategoria` VARCHAR(1) NOT NULL COLLATE 'utf8mb3_general_ci'
 ) ENGINE=MyISAM;
+
+-- Removendo tabela temporária e criando a estrutura VIEW final
+DROP TABLE IF EXISTS `vi_diasclientes`;
+CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `vi_diasclientes` AS select `c`.`nomeCliente` AS `nomeCliente`,`c`.`cpfCliente` AS `cpfCliente`,`c`.`telefone` AS `telefone`,date_format(`c`.`dataCadastro`,'%d/%m/%Y') AS `dataCadastro_formatada`,(to_days(curdate()) - to_days(`c`.`dataCadastro`)) AS `dias_cadastrado` from `cliente` `c`
+;
 
 -- Removendo tabela temporária e criando a estrutura VIEW final
 DROP TABLE IF EXISTS `vi_estoquefornecedores`;
