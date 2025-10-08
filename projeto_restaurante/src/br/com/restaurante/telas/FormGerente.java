@@ -5,17 +5,45 @@
  */
 package br.com.restaurante.telas;
 
+import java.awt.Image;
+import javax.swing.ImageIcon;
+import javax.swing.JInternalFrame;
+
 /**
  *
  * @author yuji
  */
 public class FormGerente extends javax.swing.JFrame {
 
+    FornecedorGerente formFornecedor = new FornecedorGerente();
+    ClienteGerente formCliente = new ClienteGerente();
+    EstoqueGerente formEstoque = new EstoqueGerente();
+
     /**
      * Creates new form FormGerente
      */
     public FormGerente() {
         initComponents();
+    }
+
+    private void alternarTela(JInternalFrame novaTela) {
+        // Oculta todas as telas abertas
+        for (JInternalFrame frame : jDesktopPane1.getAllFrames()) {
+            frame.setVisible(false);
+        }
+
+        // Adiciona a nova tela se ainda não estiver no desktop
+        if (novaTela.getParent() == null) {
+            jDesktopPane1.add(novaTela);
+        }
+
+        novaTela.setVisible(true);
+        try {
+            novaTela.setSelected(true);
+        } catch (java.beans.PropertyVetoException e) {
+            // ignora se não puder selecionar
+        }
+        novaTela.toFront();
     }
 
     /**
@@ -27,19 +55,28 @@ public class FormGerente extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jButton1 = new javax.swing.JButton();
+        btn_FornecedorGerente = new javax.swing.JButton();
         jDesktopPane1 = new javax.swing.JDesktopPane();
-        jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
-        jMenu2 = new javax.swing.JMenu();
+        btn_ClienteGerente = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        jButton2 = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Gerente");
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
 
-        jButton1.setText("jButton1");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btn_FornecedorGerente.setText("Fornecedor");
+        btn_FornecedorGerente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btn_FornecedorGerenteActionPerformed(evt);
             }
         });
 
@@ -56,61 +93,154 @@ public class FormGerente extends javax.swing.JFrame {
             .addGap(0, 674, Short.MAX_VALUE)
         );
 
-        jMenu1.setText("File");
-
-        jMenuItem1.setText("jMenuItem1");
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+        btn_ClienteGerente.setText("Cliente");
+        btn_ClienteGerente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
+                btn_ClienteGerenteActionPerformed(evt);
             }
         });
-        jMenu1.add(jMenuItem1);
 
-        jMenuBar1.add(jMenu1);
+        jButton1.setText("Voltar");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
-        jMenu2.setText("Edit");
-        jMenuBar1.add(jMenu2);
+        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel1.setText("Acesse:");
 
-        setJMenuBar(jMenuBar1);
+        jButton2.setText("Estoque");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
+        jLabel2.setText(" ");
+
+        jLabel3.setText(" ");
+
+        jLabel4.setText(" ");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(36, 36, 36)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(25, 25, 25)
                 .addComponent(jDesktopPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
-                .addComponent(jButton1)
-                .addGap(42, 42, 42))
+                .addGap(29, 29, 29)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(15, 15, 15)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel2)
+                                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(btn_ClienteGerente, javax.swing.GroupLayout.DEFAULT_SIZE, 174, Short.MAX_VALUE)
+                            .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, 174, Short.MAX_VALUE)
+                            .addComponent(btn_FornecedorGerente, javax.swing.GroupLayout.DEFAULT_SIZE, 174, Short.MAX_VALUE))
+                        .addGap(0, 116, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(115, 115, 115)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btn_FornecedorGerente, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2))
+                .addGap(40, 40, 40)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3))
+                .addGap(40, 40, 40)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btn_ClienteGerente, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButton1)
-                .addGap(32, 32, 32))
+                .addGap(23, 23, 23))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 13, Short.MAX_VALUE)
-                .addComponent(jDesktopPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 674, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jDesktopPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 674, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
+        jLabel2.getAccessibleContext().setAccessibleName(" ");
+
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btn_FornecedorGerenteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_FornecedorGerenteActionPerformed
+        // TODO add your handling code here:
+        alternarTela(formFornecedor);
+    }//GEN-LAST:event_btn_FornecedorGerenteActionPerformed
+
+    private void btn_ClienteGerenteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_ClienteGerenteActionPerformed
+        // TODO add your handling code here:
+        alternarTela(formCliente);
+    }//GEN-LAST:event_btn_ClienteGerenteActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        GerenteClientes cliente = new GerenteClientes();
-        cliente.setVisible(true);
-        jDesktopPane1.add(cliente);
+        TelaInicial tl = new TelaInicial();
+        tl.setVisible(true);
+        this.dispose();
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-        GerenteClientes cliente = new GerenteClientes();
-        cliente.setVisible(true);
-        jDesktopPane1.add(cliente);
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
+        // Fecha o fornecedor se estiver aberto
+        alternarTela(formEstoque);
+
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        // TODO add your handling code here:
+        ImageIcon icon = new ImageIcon(getClass().getResource("/br/com/restaurante/img/fornecedor.png"));
+
+        // Define tamanho menor (ex: 80x80)
+        int largura = 30;
+        int altura = 30;
+        Image scaled = icon.getImage().getScaledInstance(largura, altura, Image.SCALE_SMOOTH);
+
+        // Aplica na JLabel
+        jLabel2.setIcon(new ImageIcon(scaled));
+        
+        
+        ImageIcon icon2 = new ImageIcon(getClass().getResource("/br/com/restaurante/img/caixa.png"));
+
+        // Define tamanho menor (ex: 80x80)
+        int largura2 = 30;
+        int altura2 = 30;
+        Image scaled2 = icon2.getImage().getScaledInstance(largura2, altura2, Image.SCALE_SMOOTH);
+
+        // Aplica na JLabel
+        jLabel3.setIcon(new ImageIcon(scaled2));
+        
+        
+        ImageIcon icon3 = new ImageIcon(getClass().getResource("/br/com/restaurante/img/clientes.png"));
+
+        // Define tamanho menor (ex: 80x80)
+        int largura3 = 30;
+        int altura3 = 30;
+        Image scaled3 = icon2.getImage().getScaledInstance(largura3, altura3, Image.SCALE_SMOOTH);
+
+        // Aplica na JLabel
+        jLabel4.setIcon(new ImageIcon(scaled3));
+    }//GEN-LAST:event_formWindowOpened
 
     /**
      * @param args the command line arguments
@@ -148,11 +278,14 @@ public class FormGerente extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btn_ClienteGerente;
+    private javax.swing.JButton btn_FornecedorGerente;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JDesktopPane jDesktopPane1;
-    private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     // End of variables declaration//GEN-END:variables
 }

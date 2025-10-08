@@ -21,57 +21,39 @@ public class Cliente {
     private String cpf;
     private String senhaCliente;
     private String telefone;
+    private Date dataCadastro;
 
-    public Cliente(String nome, String cpf, String senhaCliente, String telefone) {
+    public Cliente(){}
+    
+    public Cliente(Integer id, String nome, String cpf, String senhaCliente, String telefone, Date dataCadastro) {
+        this.id = id;
         this.nome = nome;
         this.cpf = cpf;
         this.senhaCliente = senhaCliente;
         this.telefone = telefone;
+        this.dataCadastro = dataCadastro;
     }
 
-    public boolean insereCliente() {
-        String sql = "CALL `proc_insereCliente`(?, ?, ?, ?)";
-        PreparedStatement prt = ModuloConexao.getPreparableStatement(sql);
-        try {
-            prt.setString(1, this.nome);
-            prt.setString(2, this.cpf);
-            prt.setString(3, this.senhaCliente);
-            prt.setString(4, this.telefone);
-            prt.execute();
-            return true;
-        } catch (Exception e) {
-            return false;
-        } finally {
-            try {
-                prt.close();
-            } catch (Exception ignore) {
+    
 
-            }
-        }
+
+    public Integer getId() {
+        return id;
     }
 
-    public static Cliente mostrarCliente(String cpf, String senha) {
-        String sql = "select * from cliente where cpfCliente = ? AND senhaCliente = ?";
-
-        PreparedStatement pst = ModuloConexao.getPreparableStatement(sql);
-        try {
-            pst.setString(1, cpf);
-            pst.setString(2, senha);
-            ResultSet rs = pst.executeQuery();
-            if (rs.next()) {
-                return new Cliente(rs.getString("nomeCliente"), 
-                                    rs.getString("cpfCliente"), 
-                                    rs.getString("senhaCliente"), 
-                                    rs.getString("telefone"));
-            } else {
-                return null;
-            }
-        } catch (SQLException ex) {
-            System.out.println(ex);
-        }
-        return null;
-
+    public void setId(Integer id) {
+        this.id = id;
     }
+
+    public Date getDataCadastro() {
+        return dataCadastro;
+    }
+
+    public void setDataCadastro(Date dataCadastro) {
+        this.dataCadastro = dataCadastro;
+    }
+
+    
 
     public String getNome() {
         return nome;

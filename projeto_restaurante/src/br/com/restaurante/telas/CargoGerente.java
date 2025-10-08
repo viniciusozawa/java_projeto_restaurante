@@ -4,51 +4,58 @@
  * and open the template in the editor.
  */
 package br.com.restaurante.telas;
+
 import java.util.ArrayList;
-import br.com.restaurante.classes.FornecedorDAO;
-import br.com.restaurante.classes.Fornecedor;
+import br.com.restaurante.classes.CargoDAO;
+import br.com.restaurante.classes.Cargo;
 import javax.swing.JOptionPane;
 
 /**
  *
  * @author yuji
  */
-public class GerenteClientes extends javax.swing.JInternalFrame {
-    FornecedorDAO objFornecedorDAO = new FornecedorDAO();
+public class CargoGerente extends javax.swing.JInternalFrame {
+
+    CargoDAO objCargoDAO = new CargoDAO();
+
+    
     /**
      * Creates new form GerenteClientes
      */
-    public GerenteClientes() {
+    public CargoGerente() {
         initComponents();
         atulizaTabela();
+        trataEdicao(false);
     }
-    public void atulizaTabela(){
-        listFornecedores.clear();
-        listFornecedores.addAll(objFornecedorDAO.getLista());
-        int linha = listFornecedores.size() - 1;
-        if(linha >= 0){
-            tbl_fornecedores.setRowSelectionInterval(linha, linha);
-            tbl_fornecedores.scrollRectToVisible(tbl_fornecedores.getCellRect(linha, linha, true));
+
+    public void atulizaTabela() {
+        listCargo.clear();
+        listCargo.addAll(objCargoDAO.getLista());
+        int linha = listCargo.size() - 1;
+        if (linha >= 0) {
+            tbl_cargos.setRowSelectionInterval(linha, linha);
+            tbl_cargos.scrollRectToVisible(tbl_cargos.getCellRect(linha, linha, true));
         }
     }
-    
-    private void trataEdicao(boolean editando){
+
+    private void trataEdicao(boolean editando) {
         btn_cancelar.setEnabled(editando);
         btn_salva.setEnabled(editando);
         btn_editar.setEnabled(!editando);
-        
-        int linha = listFornecedores.size() -1;
-        if(linha<0){
+
+        int linha = listCargo.size() - 1;
+        if (linha < 0) {
             btn_excluir.setEnabled(false);
             btn_editar.setEnabled(false);
-            input_cidade.setText("");
             input_codigo.setText("");
+            input_nome.setText("");
+            
             btn_primeiro.setEnabled(false);
             btn_proximo.setEnabled(false);
             btn_anterior.setEnabled(false);
             btn_ultimo.setEnabled(false);
-            
-        }else{
+
+        } else {
             btn_excluir.setEnabled(!editando);
             btn_editar.setEnabled(!editando);
             btn_primeiro.setEnabled(!editando);
@@ -58,26 +65,23 @@ public class GerenteClientes extends javax.swing.JInternalFrame {
         }
         btn_novo.setEnabled(!editando);
         btn_fechar.setEnabled(!editando);
-        input_cidade.setEnabled(editando);
-        cbx_uf.setEnabled(editando);
-        tbl_fornecedores.setEnabled(editando);
+        input_codigo.setEnabled(editando);
+        input_nome.setEnabled(editando);
+       
+        tbl_cargos.setEnabled(editando);
     }
-    
-    public boolean validaCampos(){
-        if(!(input_cidade.getText().length() > 0)){
+
+    public boolean validaCampos() {
+        if (!(input_nome.getText().length() > 0)) {
             JOptionPane.showMessageDialog(null, "Informe o nome da cidade");
-            input_cidade.requestFocus();
+            input_nome.requestFocus();
             return false;
         }
-        if(!(cbx_uf.getSelectedIndex() >= 0)){
-            JOptionPane.showMessageDialog(null, "Selecione uma UF");
-            cbx_uf.requestFocus();
-            return false;
-        }
-        return true;
         
+        return true;
+
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -88,11 +92,11 @@ public class GerenteClientes extends javax.swing.JInternalFrame {
     private void initComponents() {
         bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
 
-        listFornecedores = org.jdesktop.observablecollections.ObservableCollections.observableList(new ArrayList<Fornecedor>());
+        listCargo = org.jdesktop.observablecollections.ObservableCollections.observableList(new ArrayList<Cargo>());
         jTabbedPane4 = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
-        tbl_fornecedores = new javax.swing.JTable();
+        tbl_cargos = new javax.swing.JTable();
         jPanel2 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         btn_novo = new javax.swing.JButton();
@@ -101,19 +105,10 @@ public class GerenteClientes extends javax.swing.JInternalFrame {
         btn_salva = new javax.swing.JButton();
         btn_excluir = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
         input_codigo = new javax.swing.JTextField();
-        input_cidade = new javax.swing.JTextField();
-        cbx_uf = new javax.swing.JComboBox<>();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
+        input_nome = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
-        jLabel7 = new javax.swing.JLabel();
-        jTextField4 = new javax.swing.JTextField();
+        jPanel4 = new javax.swing.JPanel();
         painelNavegacao6 = new javax.swing.JPanel();
         btn_primeiro = new javax.swing.JButton();
         btn_anterior = new javax.swing.JButton();
@@ -123,31 +118,16 @@ public class GerenteClientes extends javax.swing.JInternalFrame {
 
         setPreferredSize(new java.awt.Dimension(742, 526));
 
-        org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, listFornecedores, tbl_fornecedores);
+        org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, listCargo, tbl_cargos);
         org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${cod}"));
         columnBinding.setColumnName("Cod");
         columnBinding.setColumnClass(Integer.class);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${nome}"));
-        columnBinding.setColumnName("Nome");
-        columnBinding.setColumnClass(String.class);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${cnpj}"));
-        columnBinding.setColumnName("Cnpj");
-        columnBinding.setColumnClass(String.class);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${endereco}"));
-        columnBinding.setColumnName("Endereco");
-        columnBinding.setColumnClass(String.class);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${bairro}"));
-        columnBinding.setColumnName("Bairro");
-        columnBinding.setColumnClass(String.class);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${cidade}"));
-        columnBinding.setColumnName("Cidade");
-        columnBinding.setColumnClass(String.class);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${uf}"));
-        columnBinding.setColumnName("Uf");
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${descricao}"));
+        columnBinding.setColumnName("Descricao");
         columnBinding.setColumnClass(String.class);
         bindingGroup.addBinding(jTableBinding);
         jTableBinding.bind();
-        jScrollPane3.setViewportView(tbl_fornecedores);
+        jScrollPane3.setViewportView(tbl_cargos);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -163,6 +143,8 @@ public class GerenteClientes extends javax.swing.JInternalFrame {
         );
 
         jTabbedPane4.addTab("Dados", jPanel1);
+
+        jPanel2.setPreferredSize(new java.awt.Dimension(758, 598));
 
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Ações"));
 
@@ -209,33 +191,29 @@ public class GerenteClientes extends javax.swing.JInternalFrame {
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel1.setText("Código:");
 
-        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel2.setText("Cidade:");
-
-        jLabel3.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel3.setText("UF:");
-
         input_codigo.setEditable(false);
         input_codigo.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+
+        org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, tbl_cargos, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.cod}"), input_codigo, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        bindingGroup.addBinding(binding);
+
         input_codigo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 input_codigoActionPerformed(evt);
             }
         });
 
-        cbx_uf.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA", "MT", "MS", "MG", "PA", "PB", "PR", "PE", "PI", "RJ", "RN", "RS", "RO", "RR", "SC", "SP", "SE", "TO" }));
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, tbl_cargos, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.nome}"), input_nome, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        bindingGroup.addBinding(binding);
+
+        input_nome.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                input_nomeActionPerformed(evt);
+            }
+        });
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel4.setText("Nome:");
-
-        jLabel5.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel5.setText("Cnpj:");
-
-        jLabel6.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel6.setText("Endereço:");
-
-        jLabel7.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel7.setText("Bairro:");
+        jLabel4.setText("Nome do Cargo:");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -244,74 +222,48 @@ public class GerenteClientes extends javax.swing.JInternalFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(19, 19, 19)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 682, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 682, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
-                                .addComponent(jLabel5)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addGap(18, 18, 18)
-                                .addComponent(input_codigo))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
-                                .addComponent(jLabel2)
-                                .addGap(18, 18, 18)
-                                .addComponent(input_cidade, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(jLabel4)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(134, 134, 134)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel6)
-                            .addComponent(jLabel7)
-                            .addComponent(jLabel3))
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGap(38, 38, 38)
-                                .addComponent(cbx_uf, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jTextField3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jTextField4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGap(27, 27, 27))))
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel4))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(input_nome, javax.swing.GroupLayout.DEFAULT_SIZE, 216, Short.MAX_VALUE)
+                            .addComponent(input_codigo))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(42, 42, 42)
+                .addGap(44, 44, 44)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
                     .addComponent(input_codigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel6)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(32, 32, 32)
+                    .addComponent(jLabel1))
+                .addGap(30, 30, 30)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel7))
-                .addGap(32, 32, 32)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel5)
-                    .addComponent(cbx_uf, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3))
-                .addGap(32, 32, 32)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(input_cidade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2))
-                .addGap(114, 114, 114))
+                    .addComponent(input_nome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4))
+                .addGap(222, 222, 222))
         );
 
-        jTabbedPane4.addTab("Cadastro Fornecedores", jPanel2);
+        jTabbedPane4.addTab("Cadastro Cargo", jPanel2);
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 713, Short.MAX_VALUE)
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 377, Short.MAX_VALUE)
+        );
+
+        jTabbedPane4.addTab("", jPanel4);
 
         painelNavegacao6.setBorder(javax.swing.BorderFactory.createTitledBorder("Navegação"));
 
@@ -382,9 +334,9 @@ public class GerenteClientes extends javax.swing.JInternalFrame {
     private void btn_novoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_novoActionPerformed
         // TODO add your handling code here:
 
-        listFornecedores.add(new Fornecedor());
-        int linha = listFornecedores.size() - 1;
-        tbl_fornecedores.setRowSelectionInterval(linha, linha);
+        listCargo.add(new Cargo());
+        int linha = listCargo.size() - 1;
+        tbl_cargos.setRowSelectionInterval(linha, linha);
         btn_novo.requestFocus();
         trataEdicao(true);
 
@@ -392,44 +344,44 @@ public class GerenteClientes extends javax.swing.JInternalFrame {
 
     private void btn_editarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_editarActionPerformed
         // TODO add your handling code here:
-//        trataEdicao(true);
-//        input_cidade.requestFocus();
+        trataEdicao(true);
+        input_nome.requestFocus();
 
     }//GEN-LAST:event_btn_editarActionPerformed
 
     private void btn_cancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cancelarActionPerformed
         // TODO add your handling code here:
 
-//        atulizaTabela();
-//        trataEdicao(false);
+        atulizaTabela();
+        trataEdicao(false);
 
     }//GEN-LAST:event_btn_cancelarActionPerformed
 
     private void btn_salvaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_salvaActionPerformed
         // TODO add your handling code here:
-        if(validaCampos()){
+        if (validaCampos()) {
             trataEdicao(false);
-            int linhaselecionada = tbl_fornecedores.getSelectedRow();
-            Fornecedor objFornecedor = listFornecedores.get(linhaselecionada);
-            objFornecedorDAO.salvar(objFornecedor);
+            int linhaselecionada = tbl_cargos.getSelectedRow();
+            Cargo objCargo = listCargo.get(linhaselecionada);
+            objCargoDAO.salvar(objCargo);
             atulizaTabela();
-            JOptionPane.showMessageDialog(null, "Fornecedor cadastrado com sucesso");
+            
         }
 
     }//GEN-LAST:event_btn_salvaActionPerformed
 
     private void btn_excluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_excluirActionPerformed
         // TODO add your handling code here:
-//        int opcao = JOptionPane.showOptionDialog(null, "Confirma exclusao ? ","Pergunta", JOptionPane.YES_NO_OPTION,
-//            JOptionPane.QUESTION_MESSAGE, null, new String[ ]{"Sim", "Não"}, "Sim");
-//        if(opcao == 0){
-//            int linhaSelecionada = tbl_cidades.getSelectedRow();
-//            Cidade objcidade= listaCidade.get(linhaSelecionada);
-//            objDaoCidade.remover(objcidade);
-//
-//            atulizaTabela();
-//            trataEdicao(false);
-//        }
+        int opcao = JOptionPane.showOptionDialog(null, "Confirma exclusao ? ","Pergunta", JOptionPane.YES_NO_OPTION,
+            JOptionPane.QUESTION_MESSAGE, null, new String[ ]{"Sim", "Não"}, "Sim");
+        if(opcao == 0){
+            int linhaSelecionada = tbl_cargos.getSelectedRow();
+            Cargo objCargo = listCargo.get(linhaSelecionada);
+            objCargoDAO.remover(objCargo);
+
+            atulizaTabela();
+            trataEdicao(false);
+        }
     }//GEN-LAST:event_btn_excluirActionPerformed
 
     private void input_codigoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_input_codigoActionPerformed
@@ -438,43 +390,48 @@ public class GerenteClientes extends javax.swing.JInternalFrame {
 
     private void btn_primeiroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_primeiroActionPerformed
         // TODO add your handling code here:
-        tbl_fornecedores.setRowSelectionInterval(0, 0);
-        tbl_fornecedores.scrollRectToVisible(tbl_fornecedores.getCellRect(0, 0, true));
+        tbl_cargos.setRowSelectionInterval(0, 0);
+        tbl_cargos.scrollRectToVisible(tbl_cargos.getCellRect(0, 0, true));
 
     }//GEN-LAST:event_btn_primeiroActionPerformed
 
     private void btn_anteriorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_anteriorActionPerformed
         // TODO add your handling code here:
-        int linha = tbl_fornecedores.getSelectedRow();
-        if((linha-1)>=0){
+        int linha = tbl_cargos.getSelectedRow();
+        System.out.println(linha);
+        if ((linha - 1) >= 0) {
             linha--;
         }
-        tbl_fornecedores.setRowSelectionInterval(0, 0);
-        tbl_fornecedores.scrollRectToVisible(tbl_fornecedores.getCellRect(linha, 0, true));
+        tbl_cargos.setRowSelectionInterval(linha, linha);
+        tbl_cargos.scrollRectToVisible(tbl_cargos.getCellRect(linha, 0, true));
     }//GEN-LAST:event_btn_anteriorActionPerformed
 
     private void btn_proximoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_proximoActionPerformed
         // TODO add your handling code here:
-        int linha = tbl_fornecedores.getSelectedRow();
-        if((linha +1) <= (tbl_fornecedores.getRowCount()-1)){
+        int linha = tbl_cargos.getSelectedRow();
+        if ((linha + 1) <= (tbl_cargos.getRowCount() - 1)) {
             linha++;
         }
-        tbl_fornecedores.setRowSelectionInterval(linha, linha);
-        tbl_fornecedores.scrollRectToVisible(tbl_fornecedores.getCellRect(linha, 0, true));
+        tbl_cargos.setRowSelectionInterval(linha, linha);
+        tbl_cargos.scrollRectToVisible(tbl_cargos.getCellRect(linha, 0, true));
     }//GEN-LAST:event_btn_proximoActionPerformed
 
     private void btn_ultimoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_ultimoActionPerformed
         // TODO add your handling code here:
-        int linha = tbl_fornecedores.getRowCount()-1;
+        int linha = tbl_cargos.getRowCount() - 1;
 
-        tbl_fornecedores.setRowSelectionInterval(linha, linha);
-        tbl_fornecedores.scrollRectToVisible(tbl_fornecedores.getCellRect(linha, 0, true));
+        tbl_cargos.setRowSelectionInterval(linha, linha);
+        tbl_cargos.scrollRectToVisible(tbl_cargos.getCellRect(linha, 0, true));
     }//GEN-LAST:event_btn_ultimoActionPerformed
 
     private void btn_fecharActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_fecharActionPerformed
-        // TODO add your handling code here:
-        //dispose();//feche a janela
+        //TODO add your handling code here:
+        dispose();//feche a janela
     }//GEN-LAST:event_btn_fecharActionPerformed
+
+    private void input_nomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_input_nomeActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_input_nomeActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -488,28 +445,19 @@ public class GerenteClientes extends javax.swing.JInternalFrame {
     private javax.swing.JButton btn_proximo;
     private javax.swing.JButton btn_salva;
     private javax.swing.JButton btn_ultimo;
-    private javax.swing.JComboBox<String> cbx_uf;
-    private javax.swing.JTextField input_cidade;
     private javax.swing.JTextField input_codigo;
+    private javax.swing.JTextField input_nome;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTabbedPane jTabbedPane4;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    private java.util.List<Fornecedor> listFornecedores;
+    private java.util.List<Cargo> listCargo;
     private javax.swing.JPanel painelNavegacao6;
-    private javax.swing.JTable tbl_fornecedores;
+    private javax.swing.JTable tbl_cargos;
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
 }

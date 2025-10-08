@@ -81,14 +81,67 @@ public class FornecedorDAO {
             inserir(objFornecedor);
             return true;
         }else{
-            System.out.println("nao deu certo");
+            alterar(objFornecedor);
             return true;
         }
         
         
     }
     
+    public boolean remover(Fornecedor objFornecedor){
+       String mysql = "delete from fornecedores where codFornecedor = ?";
+        
+        try{
+            PreparedStatement prt = ModuloConexao.getPreparableStatement(mysql);
+            prt.setInt(1, objFornecedor.getCod());
+            if(prt.executeUpdate()>0){
+                JOptionPane.showMessageDialog(null, "Apagado com sucesso");
+                return true;
+            }else{
+                JOptionPane.showMessageDialog(null, "Erro chave nao encontrada");
+                return false;
+            }
+            
+        }catch(SQLException ex){
+            JOptionPane.showMessageDialog(null, "Erro em mysql "+ex.getMessage());
+            return false;
+        }
+    }
     
+    public boolean alterar(Fornecedor objFornecedor){
+        String mysql = "UPDATE fornecedores SET "
+           + "nomeFornecedor = ?, "
+           + "cnpj = ?, "
+           + "endereco = ?, "
+           + "bairro = ?, "
+           + "cidade = ?, "
+           + "estado = ? "
+           + "WHERE codFornecedor = ?";
+   
+        
+        try{
+            PreparedStatement prt = ModuloConexao.getPreparableStatement(mysql);
+            prt.setString(1, objFornecedor.getNome() );
+            prt.setString(2, objFornecedor.getCnpj());
+            prt.setString(3, objFornecedor.getEndereco());
+            prt.setString(4, objFornecedor.getBairro());
+            prt.setString(5, objFornecedor.getCidade());
+            prt.setString(6, objFornecedor.getUf());
+            prt.setInt(7, objFornecedor.getCod());
+            
+            if(prt.executeUpdate()>0){
+                JOptionPane.showMessageDialog(null, "Alterado com sucesso");
+                return true;
+            }else{
+                JOptionPane.showMessageDialog(null, "Erro chave nao encontrada");
+                return false;
+            }
+            
+        }catch(SQLException ex){
+            JOptionPane.showMessageDialog(null, "Erro em mysql "+ex.getMessage());
+            return false;
+        }
+    }
     
     
 }

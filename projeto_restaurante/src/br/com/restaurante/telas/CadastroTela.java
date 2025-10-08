@@ -4,50 +4,53 @@
  * and open the template in the editor.
  */
 package br.com.restaurante.telas;
+
 import br.com.restaurante.classes.Cliente;
+import br.com.restaurante.classes.ClienteDAO;
 import java.sql.*;
 import br.com.restaurante.dal.ModuloConexao;
 import javax.swing.JOptionPane;
+
 /**
  *
  * @author Usuario
  */
 public class CadastroTela extends javax.swing.JFrame {
-    Connection conexao = null;
-    PreparedStatement ps = null;
-    ResultSet rs = null;
-    
+
+    ClienteDAO dao = new ClienteDAO();
+
     /**
      * Creates new form CadastroTela
-     * 
+     *
      */
-    public static boolean validarCpf(String cpf){
+    public static boolean validarCpf(String cpf) {
         return cpf.matches("\\\\d{11}");
     }
-    
-    
-    public void cadastro(){
-        String senha = new String(caixa_password.getPassword());
-        Cliente cliente = new Cliente(
-            caixa_nome.getText(), 
-            caixa_cpf.getText(),
-            senha, 
-            caixa_telefone.getText()
-        );
-        
-        System.out.println(cliente);
-        if(cliente.insereCliente()){
-            JOptionPane.showConfirmDialog(null, "Cliente Cadastrado com Sucesso");
-        }else{
-            JOptionPane.showConfirmDialog(null, "Não foi possível cadastrar");
-        }
-        
+
+    public void cadastro() {
+        // Cria um novo cliente
+        Cliente novoCliente = new Cliente();
+
+        // Define os valores vindos dos campos do formulário
+        novoCliente.setNome(caixa_nome.getText());
+        novoCliente.setCpf(caixa_cpf.getText());
+        novoCliente.setSenhaCliente(new String(caixa_password.getPassword()));
+        novoCliente.setTelefone(caixa_telefone.getText());
+
+        // Cria o DAO e tenta inserir o cliente
+        dao.inserir(novoCliente);
     }
-    
+
+    public void limparCampos() {
+        caixa_nome.setText("");
+        caixa_cpf.setText("");
+        caixa_password.setText("");
+        caixa_telefone.setText("");
+    }
+
     public CadastroTela() {
         initComponents();
-        conexao = ModuloConexao.conector();
-        
+
     }
 
     /**
@@ -227,9 +230,9 @@ public class CadastroTela extends javax.swing.JFrame {
     }//GEN-LAST:event_caixa_nomeActionPerformed
 
     private void btn_voltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_voltarActionPerformed
-       TelaInicial novaTela = new TelaInicial(); // cria a nova tela
-       novaTela.setVisible(true); // exibe a nova tela
-       this.dispose();
+        TelaInicial novaTela = new TelaInicial(); // cria a nova tela
+        novaTela.setVisible(true); // exibe a nova tela
+        this.dispose();
     }//GEN-LAST:event_btn_voltarActionPerformed
 
     private void caixa_telefoneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_caixa_telefoneActionPerformed
@@ -242,11 +245,13 @@ public class CadastroTela extends javax.swing.JFrame {
 
     private void btn_limparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_limparActionPerformed
         // TODO add your handling code here:
+        limparCampos();
     }//GEN-LAST:event_btn_limparActionPerformed
 
     private void btn_confirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_confirmarActionPerformed
         // TODO add your handling code here:
         cadastro();
+        limparCampos();
     }//GEN-LAST:event_btn_confirmarActionPerformed
 
     /**

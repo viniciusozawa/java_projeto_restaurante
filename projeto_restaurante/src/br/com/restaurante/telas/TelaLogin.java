@@ -5,6 +5,8 @@
 package br.com.restaurante.telas;
 
 import br.com.restaurante.classes.Cliente;
+import br.com.restaurante.classes.ClienteDAO;
+import br.com.restaurante.dal.ModuloConexao;
 import javax.swing.JOptionPane;
 
 /**
@@ -23,13 +25,16 @@ public class TelaLogin extends javax.swing.JFrame {
     }
     
     public boolean login(){
+       String cpf = input_cpf.getText();
        String senha = new String(input_password.getPassword());
-       cliente = Cliente.mostrarCliente(input_cpf.getText(), senha);
-       if(cliente == null){
-          return false;
-        } else {
+       this.cliente = ClienteDAO.login(cpf, senha);
+       if( this.cliente != null){
            return true;
-        }
+       } else {
+           return false;
+       }
+       
+       
     }
     /**
      * This method is called from within the constructor to initialize the form.
