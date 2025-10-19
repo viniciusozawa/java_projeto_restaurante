@@ -41,4 +41,4 @@ Este projeto tem como objetivo criar um **sistema de automação para restaurant
 
 1. **Clone o repositório:**
    ```bash
-   git clone https://github.com/usuario/restaurante-automacao.git
+   git clone https://github.com/viniciusozawa/java_projeto_restaurante.git
