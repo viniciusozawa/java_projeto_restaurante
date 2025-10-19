@@ -426,7 +426,9 @@ public class CargoGerente extends javax.swing.JInternalFrame {
 
     private void btn_fecharActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_fecharActionPerformed
         //TODO add your handling code here:
+        FormGerente form = new FormGerente();
         dispose();//feche a janela
+        form.setVisible(true);
     }//GEN-LAST:event_btn_fecharActionPerformed
 
     private void input_nomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_input_nomeActionPerformed

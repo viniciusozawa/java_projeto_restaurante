@@ -14,28 +14,32 @@ import javax.swing.JOptionPane;
  * @author yuji
  */
 public class TelaLogin extends javax.swing.JFrame {
+
     Cliente cliente;
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(TelaLogin.class.getName());
+    final boolean[] jaFocou = {false};
 
     /**
      * Creates new form TelaLogin
      */
     public TelaLogin() {
         initComponents();
+        input_cpf.setText("00000000000");
+        btn_enviar.requestFocus();
     }
-    
-    public boolean login(){
-       String cpf = input_cpf.getText();
-       String senha = new String(input_password.getPassword());
-       this.cliente = ClienteDAO.login(cpf, senha);
-       if( this.cliente != null){
-           return true;
-       } else {
-           return false;
-       }
-       
-       
+
+    public boolean login() {
+        String cpf = input_cpf.getText();
+        String senha = new String(input_password.getPassword());
+        this.cliente = ClienteDAO.login(cpf, senha);
+        if (this.cliente != null) {
+            return true;
+        } else {
+            return false;
+        }
+
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -65,6 +69,19 @@ public class TelaLogin extends javax.swing.JFrame {
         input_cpf.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         input_cpf.setText("000.000.000-00  ");
         input_cpf.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        input_cpf.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                input_cpfFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                input_cpfFocusLost(evt);
+            }
+        });
+        input_cpf.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                input_cpfActionPerformed(evt);
+            }
+        });
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabel1.setText("CPF:");
@@ -152,19 +169,49 @@ public class TelaLogin extends javax.swing.JFrame {
 
     private void btn_enviarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_enviarActionPerformed
         // TODO add your handling code here:
-        if(login()){
-            JOptionPane.showMessageDialog(null, "Deu certo"+cliente.getNome());
-        }else{
-            System.out.println("null"+cliente);
+        if (login()) {
+            JOptionPane.showMessageDialog(null, "Acesso Liberado: Bem Vindo " + cliente.getNome());
+            TelaCliente telanova = new TelaCliente();
+            telanova.setVisible(true);
+            this.dispose();
+        } else {
+            JOptionPane.showMessageDialog(null, "Login ou Senha errados");
+            System.out.println("null" + cliente);
         }
     }//GEN-LAST:event_btn_enviarActionPerformed
 
     private void btn_voltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_voltarActionPerformed
         // TODO add your handling code here:
-       TelaInicial novaTela = new TelaInicial(); // cria a nova tela
-       novaTela.setVisible(true); // exibe a nova tela
-       this.dispose();
+        TelaInicial novaTela = new TelaInicial(); // cria a nova tela
+        novaTela.setVisible(true); // exibe a nova tela
+        this.dispose();
     }//GEN-LAST:event_btn_voltarActionPerformed
+
+    private void input_cpfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_input_cpfActionPerformed
+        // TODO add your handling code here:
+
+    }//GEN-LAST:event_input_cpfActionPerformed
+
+    private void input_cpfFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_input_cpfFocusGained
+        // TODO add your handling code here:
+
+        String texto = input_cpf.getText().replace(".", "").replace("-", "");
+        if (texto.equals("00000000000")) {
+            input_cpf.setText("");
+        }
+
+
+    }//GEN-LAST:event_input_cpfFocusGained
+
+    private void input_cpfFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_input_cpfFocusLost
+        // TODO add your handling code here:
+        String texto = input_cpf.getText().replace(".", "").replace("-", "").replace(" ", "");
+        if (texto.isEmpty() || texto.equals("00000000000")) {
+            input_cpf.setText("00000000000");
+        }
+
+
+    }//GEN-LAST:event_input_cpfFocusLost
 
     /**
      * @param args the command line arguments

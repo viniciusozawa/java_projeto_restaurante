@@ -45,6 +45,7 @@ public class EstoqueDAO {
     }
 
     public boolean inserir(Estoque objEstoque) {
+        System.out.println(objEstoque.getQuant()+"  "+objEstoque.getdataProducaoUtil()+"   "+objEstoque.getdataVencimentoUtil());
         String mysql = "CALL proc_insereEstoque(?,?,?,?,?)";
         java.util.Date dataProdUtil = objEstoque.getdataProducaoUtil(); // do getter auxiliar
         java.util.Date dataVencUtil = objEstoque.getdataVencimentoUtil();

@@ -72,6 +72,7 @@ public class Estoque {
         if (dataProducao == null) {
             return null;
         }
+        
         return new java.util.Date(dataProducao.getTime());
     }
 
@@ -79,15 +80,17 @@ public class Estoque {
         if (d == null) {
             dataProducao = null;
         } else {
+            
             dataProducao = new java.sql.Date(d.getTime());
+            System.out.println(dataProducao);
         }
     }
 
     public java.util.Date getdataVencimentoUtil() {
-        if (dataProducao == null) {
+        if (dataVencimento == null) {
             return null;
         }
-        return new java.util.Date(dataProducao.getTime());
+        return new java.util.Date(dataVencimento.getTime());
     }
 
     public void setdataVencimentoUtil(java.util.Date d) {
@@ -95,6 +98,7 @@ public class Estoque {
             dataVencimento = null;
         } else {
             dataVencimento = new java.sql.Date(d.getTime());
+            System.out.println(dataVencimento);
         }
     }
 

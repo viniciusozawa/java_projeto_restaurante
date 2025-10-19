@@ -32,7 +32,7 @@ public class EstoqueGerente extends javax.swing.JInternalFrame {
      */
     public EstoqueGerente() {
         initComponents();
-
+        
         atulizaTabela();
         trataEdicao(false);
     }
@@ -61,7 +61,6 @@ public class EstoqueGerente extends javax.swing.JInternalFrame {
             input_quantidade.setText("");
 
             input_descricao.setText("");
-           
 
             btn_primeiro.setEnabled(false);
             btn_proximo.setEnabled(false);
@@ -104,12 +103,12 @@ public class EstoqueGerente extends javax.swing.JInternalFrame {
     }
 
     public java.sql.Date formatarData(String text) {
-         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
         try {
             Date utilDate = (Date) sdf.parse(text);          // converte para java.util.Date
             return new java.sql.Date(utilDate.getTime());
-            
+
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -146,7 +145,6 @@ public class EstoqueGerente extends javax.swing.JInternalFrame {
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        input_descricao = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         Date hoje = new Date();
 
@@ -162,6 +160,8 @@ public class EstoqueGerente extends javax.swing.JInternalFrame {
 
         // Cria o JSpinner com o modelo
         jSpinner2 = new JSpinner(sm2);
+        jScrollPane1 = new javax.swing.JScrollPane();
+        input_descricao = new javax.swing.JTextArea();
         painelNavegacao6 = new javax.swing.JPanel();
         btn_primeiro = new javax.swing.JButton();
         btn_anterior = new javax.swing.JButton();
@@ -175,39 +175,47 @@ public class EstoqueGerente extends javax.swing.JInternalFrame {
         org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${cod}"));
         columnBinding.setColumnName("Cod");
         columnBinding.setColumnClass(Integer.class);
+        columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${nomeItem}"));
         columnBinding.setColumnName("Nome Item");
         columnBinding.setColumnClass(String.class);
+        columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${quant}"));
         columnBinding.setColumnName("Quant");
         columnBinding.setColumnClass(Double.class);
+        columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${dataProducaoUtil}"));
         columnBinding.setColumnName("Data Producao Util");
         columnBinding.setColumnClass(java.util.Date.class);
+        columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${dataVencimentoUtil}"));
         columnBinding.setColumnName("Data Vencimento Util");
         columnBinding.setColumnClass(java.util.Date.class);
+        columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${descricao}"));
         columnBinding.setColumnName("Descricao");
         columnBinding.setColumnClass(String.class);
+        columnBinding.setEditable(false);
         bindingGroup.addBinding(jTableBinding);
         jTableBinding.bind();
         jScrollPane3.setViewportView(tbl_estoques);
         if (tbl_estoques.getColumnModel().getColumnCount() > 0) {
-            tbl_estoques.getColumnModel().getColumn(0).setResizable(false);
-            tbl_estoques.getColumnModel().getColumn(0).setPreferredWidth(10);
+            tbl_estoques.getColumnModel().getColumn(0).setMinWidth(40);
+            tbl_estoques.getColumnModel().getColumn(0).setPreferredWidth(40);
+            tbl_estoques.getColumnModel().getColumn(0).setMaxWidth(40);
             tbl_estoques.getColumnModel().getColumn(1).setResizable(false);
             tbl_estoques.getColumnModel().getColumn(2).setResizable(false);
             tbl_estoques.getColumnModel().getColumn(3).setResizable(false);
             tbl_estoques.getColumnModel().getColumn(4).setResizable(false);
             tbl_estoques.getColumnModel().getColumn(5).setResizable(false);
+            tbl_estoques.getColumnModel().getColumn(5).setPreferredWidth(300);
         }
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 757, Short.MAX_VALUE)
+            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 741, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -301,9 +309,6 @@ public class EstoqueGerente extends javax.swing.JInternalFrame {
         jLabel6.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel6.setText("Data Vencimento");
 
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, tbl_estoques, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.descricao}"), input_descricao, org.jdesktop.beansbinding.BeanProperty.create("text"));
-        bindingGroup.addBinding(binding);
-
         jLabel7.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel7.setText("Descrição:");
 
@@ -319,6 +324,16 @@ public class EstoqueGerente extends javax.swing.JInternalFrame {
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, tbl_estoques, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.dataProducaoUtil}"), jSpinner2, org.jdesktop.beansbinding.BeanProperty.create("value"));
         bindingGroup.addBinding(binding);
 
+        input_descricao.setColumns(20);
+        input_descricao.setLineWrap(true);
+        input_descricao.setRows(5);
+        input_descricao.setWrapStyleWord(true);
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, tbl_estoques, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.descricao}"), input_descricao, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        bindingGroup.addBinding(binding);
+
+        jScrollPane1.setViewportView(input_descricao);
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -327,35 +342,34 @@ public class EstoqueGerente extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel5)
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel1))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel5)
-                                    .addComponent(jLabel4))
-                                .addGap(34, 34, 34)
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(input_produto)
-                                    .addComponent(input_quantidade)))
+                                .addComponent(input_codigo, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE))
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addGap(65, 65, 65)
-                                .addComponent(input_codigo, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel6)
-                            .addComponent(jLabel7)
-                            .addComponent(jLabel2))
-                        .addGap(21, 21, 21)
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(input_produto, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(input_quantidade, javax.swing.GroupLayout.Alignment.LEADING))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(119, 119, 119))
-                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(input_descricao)
-                                .addGroup(jPanel2Layout.createSequentialGroup()
-                                    .addComponent(jSpinner2, javax.swing.GroupLayout.DEFAULT_SIZE, 103, Short.MAX_VALUE)
-                                    .addGap(119, 119, 119))))
-                        .addGap(38, 38, 38))
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel6)
+                                    .addComponent(jLabel2))
+                                .addGap(21, 21, 21)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jSpinner2, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(jLabel7)
+                                .addGap(18, 18, 18)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(63, 63, 63))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 682, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
@@ -378,12 +392,13 @@ public class EstoqueGerente extends javax.swing.JInternalFrame {
                     .addComponent(jLabel2)
                     .addComponent(jSpinner2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(32, 32, 32)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(input_quantidade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel5)
-                    .addComponent(jLabel7)
-                    .addComponent(input_descricao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(132, Short.MAX_VALUE))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(input_quantidade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel5)
+                        .addComponent(jLabel7))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(58, Short.MAX_VALUE))
         );
 
         jTabbedPane4.addTab("Cadastro Estoque", jPanel2);
@@ -437,7 +452,7 @@ public class EstoqueGerente extends javax.swing.JInternalFrame {
             .addComponent(painelNavegacao6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jTabbedPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 762, Short.MAX_VALUE)
+                .addComponent(jTabbedPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 746, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -523,10 +538,10 @@ public class EstoqueGerente extends javax.swing.JInternalFrame {
             trataEdicao(false);
             int linhaselecionada = tbl_estoques.getSelectedRow();
             Estoque objEstoque = listEstoque.get(linhaselecionada);
-            
+
             objEstoqueDao.salvar(objEstoque);
             atulizaTabela();
-            JOptionPane.showMessageDialog(null, "Fornecedor cadastrado com sucesso");
+            
         }
     }//GEN-LAST:event_btn_salvaActionPerformed
 
@@ -566,7 +581,7 @@ public class EstoqueGerente extends javax.swing.JInternalFrame {
     private javax.swing.JButton btn_salva;
     private javax.swing.JButton btn_ultimo;
     private javax.swing.JTextField input_codigo;
-    private javax.swing.JTextField input_descricao;
+    private javax.swing.JTextArea input_descricao;
     private javax.swing.JTextField input_produto;
     private javax.swing.JTextField input_quantidade;
     private javax.swing.JLabel jLabel1;
@@ -578,6 +593,7 @@ public class EstoqueGerente extends javax.swing.JInternalFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JSpinner jSpinner1;
     private javax.swing.JSpinner jSpinner2;

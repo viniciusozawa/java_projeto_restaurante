@@ -25,6 +25,8 @@ public class ClienteGerente extends javax.swing.JInternalFrame {
     public ClienteGerente() {
         initComponents();
         atulizaTabela();
+        
+      
         trataEdicao(false);
     }
 
@@ -459,16 +461,16 @@ public class ClienteGerente extends javax.swing.JInternalFrame {
 
     private void btn_excluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_excluirActionPerformed
         // TODO add your handling code here:
-                int opcao = JOptionPane.showOptionDialog(null, "Confirma exclusao ? ","Pergunta", JOptionPane.YES_NO_OPTION,
-                        JOptionPane.QUESTION_MESSAGE, null, new String[ ]{"Sim", "Não"}, "Sim");
-                if(opcao == 0){
-                        int linhaSelecionada = tbl_clientes.getSelectedRow();
-                        Cliente objCliente= listCliente.get(linhaSelecionada);
-                        objClienteDAO.remover(objCliente);
-            
-                        atulizaTabela();
-                        trataEdicao(false);
-                    }
+        int opcao = JOptionPane.showOptionDialog(null, "Confirma exclusao ? ","Pergunta", JOptionPane.YES_NO_OPTION,
+            JOptionPane.QUESTION_MESSAGE, null, new String[ ]{"Sim", "Não"}, "Sim");
+        if(opcao == 0){
+            int linhaSelecionada = tbl_clientes.getSelectedRow();
+            Cliente objCliente= listCliente.get(linhaSelecionada);
+            objClienteDAO.remover(objCliente);
+
+            atulizaTabela();
+            trataEdicao(false);
+        }
     }//GEN-LAST:event_btn_excluirActionPerformed
 
     private void btn_salvaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_salvaActionPerformed
@@ -479,7 +481,7 @@ public class ClienteGerente extends javax.swing.JInternalFrame {
             Cliente objCliente = listCliente.get(linhaselecionada);
             objClienteDAO.atualizar(objCliente);
             atulizaTabela();
-            
+
         }
     }//GEN-LAST:event_btn_salvaActionPerformed
 
@@ -493,7 +495,7 @@ public class ClienteGerente extends javax.swing.JInternalFrame {
     private void btn_editarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_editarActionPerformed
         // TODO add your handling code here:
         trataEdicao(true);
-        
+
     }//GEN-LAST:event_btn_editarActionPerformed
 
 
